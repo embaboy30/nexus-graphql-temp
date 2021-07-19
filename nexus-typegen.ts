@@ -31,7 +31,7 @@ export interface NexusGenObjects {
   Mutation: {};
   Post: { // root type
     body?: string | null; // String
-    id?: number | null; // Int
+    id?: string | null; // String
     published?: boolean | null; // Boolean
     title?: string | null; // String
   }
@@ -51,32 +51,36 @@ export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 export interface NexusGenFieldTypes {
   Mutation: { // field return type
     createDraft: NexusGenRootTypes['Post']; // Post!
+    deleteDoc: NexusGenRootTypes['Post'] | null; // Post
     publish: NexusGenRootTypes['Post'] | null; // Post
   }
   Post: { // field return type
     body: string | null; // String
-    id: number | null; // Int
+    id: string | null; // String
     published: boolean | null; // Boolean
     title: string | null; // String
   }
   Query: { // field return type
     drafts: Array<NexusGenRootTypes['Post'] | null>; // [Post]!
+    posts: Array<NexusGenRootTypes['Post'] | null> | null; // [Post]
   }
 }
 
 export interface NexusGenFieldTypeNames {
   Mutation: { // field return type name
     createDraft: 'Post'
+    deleteDoc: 'Post'
     publish: 'Post'
   }
   Post: { // field return type name
     body: 'String'
-    id: 'Int'
+    id: 'String'
     published: 'Boolean'
     title: 'String'
   }
   Query: { // field return type name
     drafts: 'Post'
+    posts: 'Post'
   }
 }
 
@@ -86,8 +90,11 @@ export interface NexusGenArgTypes {
       body: string; // String!
       title: string; // String!
     }
+    deleteDoc: { // args
+      draftId: string; // String!
+    }
     publish: { // args
-      draftId: number; // Int!
+      draftId: string; // String!
     }
   }
 }
