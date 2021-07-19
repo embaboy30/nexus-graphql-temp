@@ -1,75 +1,75 @@
 // api/graphql/Post.ts
 import { objectType, extendType, nonNull, stringArg, intArg } from 'nexus';
 export const Post = objectType({
-  name: 'Post',          
+  name: 'Post',
   definition(t) {
-    t.string('id')           
-    t.string('title')     
-    t.string('body')    
-    t.boolean('published') 
+    t.string('id')
+    t.string('title')
+    t.string('body')
+    t.boolean('published')
   },
-})
+});
+
 export const PostQuery = extendType({
-    type: 'Query',                   
-    definition(t) {
-      t.nonNull.list.field('drafts', {     
-        type: 'Post',                  
-        resolve(_root, _args, ctx) {                      
-          console.log(ctx);
-          return ctx.db.post.findMany({ where: { published: false } })
-        },
-      });
-      t.list.field('posts', {
-        type: 'Post',
-        resolve(_root, _args, ctx) {
-         return ctx.db.post.findMany({ where: { published: true } })
-        },
-      })
-    },
-  });
-  export const PostMutation = extendType({
-    type: 'Mutation',
-    definition(t) {
-      t.nonNull.field('createDraft', {
-        type: 'Post',
-        args: {                             
-          title: nonNull(stringArg()),             
-          body: nonNull(stringArg()),              
-        },
-        resolve(_root, args, ctx) {
-            const draft = {
-              title: args.title,                 
-              body: args.body,         
-              published: false,
-            }
-            return ctx.db.post.create({ data: draft })
-        },
-      });
-      t.field('publish', {
-        type: 'Post',
-        args: {
-          draftId: nonNull(stringArg()),
-        },
-        resolve(_root, args, ctx) {
-          return ctx.db.post.update({
-            where: { id: args.draftId },
-            data: {
-              published: true,
-            },
-          });
-        },
-      });
-      t.field('deleteDoc', {
-        type: 'Post',
-        args: {
-          draftId: nonNull(stringArg()),
-        },
-        resolve(_root, args, ctx) {
-          return ctx.db.post.delete({
-            where: { id: args.draftId }
-          });
-        },
-      });
-    },
-    
-  })
+  type: 'Query',
+  definition(t) {
+    t.nonNull.list.field('drafts', {
+      type: 'Post',
+      resolve(_root, _args, ctx) {
+        return ctx.db.post.findMany({ where: { published: false } })
+      },
+    });
+    t.list.field('posts', {
+      type: 'Post',
+      resolve(_root, _args, ctx) {
+        return ctx.db.post.findMany({ where: { published: true } })
+      },
+    })
+  },
+});
+export const PostMutation = extendType({
+  type: 'Mutation',
+  definition(t) {
+    t.nonNull.field('createDraft', {
+      type: 'Post',
+      args: {
+        title: nonNull(stringArg()),
+        body: nonNull(stringArg()),
+      },
+      resolve(_root, args, ctx) {
+        const draft = {
+          title: args.title,
+          body: args.body,
+          published: false,
+        }
+        return ctx.db.post.create({ data: draft })
+      },
+    });
+    t.field('publish', {
+      type: 'Post',
+      args: {
+        draftId: nonNull(stringArg()),
+      },
+      resolve(_root, args, ctx) {
+        return ctx.db.post.update({
+          where: { id: args.draftId },
+          data: {
+            published: true,
+          },
+        });
+      },
+    });
+    t.field('deleteDoc', {
+      type: 'Post',
+      args: {
+        draftId: nonNull(stringArg()),
+      },
+      resolve(_root, args, ctx) {
+        return ctx.db.post.delete({
+          where: { id: args.draftId }
+        });
+      },
+    });
+  },
+
+});

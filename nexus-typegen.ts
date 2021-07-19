@@ -28,6 +28,11 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenObjects {
+  Author: { // root type
+    description?: string | null; // String
+    id?: string | null; // String
+    name?: string | null; // String
+  }
   Mutation: {};
   Post: { // root type
     body?: string | null; // String
@@ -49,7 +54,13 @@ export type NexusGenRootTypes = NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
+  Author: { // field return type
+    description: string | null; // String
+    id: string | null; // String
+    name: string | null; // String
+  }
   Mutation: { // field return type
+    createAuthor: NexusGenRootTypes['Author']; // Author!
     createDraft: NexusGenRootTypes['Post']; // Post!
     deleteDoc: NexusGenRootTypes['Post'] | null; // Post
     publish: NexusGenRootTypes['Post'] | null; // Post
@@ -61,13 +72,20 @@ export interface NexusGenFieldTypes {
     title: string | null; // String
   }
   Query: { // field return type
+    authors: Array<NexusGenRootTypes['Author'] | null>; // [Author]!
     drafts: Array<NexusGenRootTypes['Post'] | null>; // [Post]!
     posts: Array<NexusGenRootTypes['Post'] | null> | null; // [Post]
   }
 }
 
 export interface NexusGenFieldTypeNames {
+  Author: { // field return type name
+    description: 'String'
+    id: 'String'
+    name: 'String'
+  }
   Mutation: { // field return type name
+    createAuthor: 'Author'
     createDraft: 'Post'
     deleteDoc: 'Post'
     publish: 'Post'
@@ -79,6 +97,7 @@ export interface NexusGenFieldTypeNames {
     title: 'String'
   }
   Query: { // field return type name
+    authors: 'Author'
     drafts: 'Post'
     posts: 'Post'
   }
@@ -86,6 +105,10 @@ export interface NexusGenFieldTypeNames {
 
 export interface NexusGenArgTypes {
   Mutation: {
+    createAuthor: { // args
+      description: string; // String!
+      name: string; // String!
+    }
     createDraft: { // args
       body: string; // String!
       title: string; // String!

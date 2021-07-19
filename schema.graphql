@@ -2,7 +2,14 @@
 ### Do not make changes to this file directly
 
 
+type Author {
+  description: String
+  id: String
+  name: String
+}
+
 type Mutation {
+  createAuthor(description: String!, name: String!): Author!
   createDraft(body: String!, title: String!): Post!
   deleteDoc(draftId: String!): Post
   publish(draftId: String!): Post
@@ -16,6 +23,7 @@ type Post {
 }
 
 type Query {
+  authors: [Author]!
   drafts: [Post]!
   posts: [Post]
 }

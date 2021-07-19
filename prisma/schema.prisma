@@ -10,6 +10,11 @@ generator client {
   provider = "prisma-client-js"
   previewFeatures = ["mongoDb"]
 }
+model Author {
+  id  String  @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  name          String
+  description   String
+}
 model Post {
   id  String  @id @default(dbgenerated()) @map("_id") @db.ObjectId
   title     String
